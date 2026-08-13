@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fun Starter Site</title>
+  <style>
+    :root { --bg: #0f172a; --card: #0b1220; --accent: #ffcc00; --muted: #9aa4c2; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#071029 0%, #10243a 100%);
+      font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      color: #e6eef8;
+    }
+    .card{
+      width:min(760px,92vw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:28px;
+      border-radius:14px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      display:grid;
+      gap:18px;
+      grid-template-columns: 1fr 140px;
+      align-items:center;
+    }
+    h1{ margin:0; font-size:1.6rem; letter-spacing: -0.02em; }
+    p.lead{ margin:6px 0 0; color:var(--muted); }
+    .emoji{
+      font-size:64px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      transform-origin:center;
+      animation: bob 3s ease-in-out infinite;
+    }
+    @keyframes bob{
+      0%{ transform: translateY(0) rotate(-6deg) }
+      50%{ transform: translateY(-10px) rotate(6deg) }
+      100%{ transform: translateY(0) rotate(-6deg) }
+    }
+    .controls{ display:flex; gap:8px; align-items:center; }
+    button{
+      background:var(--accent);
+      border:0;
+      color:#04131a;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 6px 12px rgba(255,204,0,0.12);
+    }
+    button.secondary{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      font-weight:500;
+      box-shadow:none;
+    }
+    .joke{
+      grid-column: 1 / -1;
+      margin-top:6px;
+      padding:12px 14px;
+      background: rgba(255,255,255,0.02);
+      border-radius:8px;
+      color:#dbe8ff;
+      min-height:48px;
+      display:flex;
+      align-items:center;
+    }
+    footer{ font-size:0.8rem; color:var(--muted); text-align:center; margin-top:12px; }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <div>
+      <h1>Welcome to the Bug-Free™ Demo Site</h1>
+      <p class="lead">This is a tiny starter page — completely free of production bugs (for now).</p>
+      <div class="controls" style="margin-top:12px;">
+        <button id="jokeBtn">Tell me a joke</button>
+        <button id="surprise" class="secondary">Surprise me</button>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center;">
+      <div class="emoji" id="emoji">🦆</div>
+    </div>
+
+    <div class="joke" id="joke">Click "Tell me a joke" for a fresh programmer-approved quip.</div>
+  </main>
+
+  <footer>Tip: commit this file as index.html at the repo root, then enable GitHub Pages in Settings → Pages.</footer>
+
+  <script>
+    const jokes = [
+      "Why do programmers prefer dark mode? Because light attracts bugs.",
+      "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
+      "Why did the developer go broke? Because he used up all his cache.",
+      "There are only 10 types of people in the world: those who understand binary and those who don't.",
+      "I would tell you a UDP joke, but you might not get it."
+    ];
+
+    const emojis = ["🦆","🦄","🐙","🦜","🐱‍👤","🧠","🍕","👾"];
+
+    const jokeEl = document.getElementById("joke");
+    const btn = document.getElementById("jokeBtn");
+    const surprise = document.getElementById("surprise");
+    const emoji = document.getElementById("emoji");
+
+    function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    btn.addEventListener("click", () => {
+      jokeEl.textContent = rand(jokes);
+      // a tiny wink animation
+      emoji.style.transform = "scale(1.12) rotate(8deg)";
+      setTimeout(()=> emoji.style.transform = "", 420);
+    });
+
+    surprise.addEventListener("click", () => {
+      emoji.textContent = rand(emojis);
+      jokeEl.textContent = "Surprise! New mascot selected. Try the joke button too.";
+    });
+
+    // Small accessibility: keyboard trigger (Enter on buttons)
+    [btn, surprise].forEach(b => b.addEventListener("keyup", e => {
+      if(e.key === "Enter") b.click();
+    }));
+  </script>
+</body>
+</html>
